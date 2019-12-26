@@ -1,6 +1,8 @@
 # My
 A collection of my scipts helping me develop in JS and PHP.  
 Currently includes only MyCrypto in js.
+I would like to point out that I'm only 14 and new to programming,  
+however I'm not scared to publish this even though everyone says don't roll your own.
 
 ## MyCrypto.js
 ### About
