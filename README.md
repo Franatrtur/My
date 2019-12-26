@@ -27,8 +27,8 @@ To hash with more words and prevent collisions use extended hashing:
 `MyCrypto.CRC.Extended(string, words_count, sensitive_to_words_count)`
 ```javascript
 let hashed = MyCrypto.CRC.Extended("a string to hash", 5, true);
-//hashing the string and generating 5 words,               ↑
-//if we generated 4 words no words would be the same ______↑
+//hashing the string and generating 5 words____________↑    ↑
+//if we generated 4 words no words would be the same _______↑
 ```
 a hashed words-object will be returned. Structure:
 ```
