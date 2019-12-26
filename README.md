@@ -94,7 +94,7 @@ an MCS export object will be returned.
   data: /result in bytes/,
   encoding: /default encoding from encryptor output encoding/,
   include: /default for including salt while converting to string/,
-  toString: /method convering the data to string/,
+  toString: /method convering the data to string/
 }
 ```
 Here is some stuff you can do with it:  
