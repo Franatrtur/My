@@ -745,10 +745,21 @@ MyCrypto.CRC.Digest = function(string){
 		crc = (crc >>> 8) ^ MyCrypto.CRC.table[(crc ^ string.charCodeAt(i)) & 0xFF];
 	return {
 		words: [(crc ^ -1) >>> 0],
-		toString: function(base){
-			base = (typeof base == "number" && base >= 2 && base <= 37) ? base : 16;
-			var lng = (Math.pow(2, 32) - 1).toString(base).length;
-			return ("00000000000000000000000000000000" + this.words[0].toString(base)).substr(-lng);
+		toString: function(custom){
+			if(typeof custom == "string" && MyCrypto.Enc.hasOwnProperty(custom))
+				return MyCrypto.Enc[custom].stringify(this.toBytes());
+			else if(typeof custom == "object" && custom.hasOwnProperty("stringify"))
+				return custom.stringify(this.toBytes());
+			else if(typeof custom == "number"){
+				custom = (custom >= 2 && custom < 37) ? custom : 16;
+				var lng = (Math.pow(2, 32) - 1).toString(custom).length;
+				var str = "";
+				for(var ix = 0; ix < this.words.length; ix++)
+					str += ("00000000000000000000000000000000" + this.words[ix].toString(custom)).substr(-lng);
+				return str;
+			}
+			else
+				return MyCrypto.Enc.Hex.stringify(this.toBytes());
 		},
 		toBytes: function(){
 			return MyCrypto.Enc.Words.from(this.words);
@@ -769,13 +780,21 @@ MyCrypto.CRC.Extended = function(string, wordscount, countsensitive){
 	wrds.shift();
 	return {
 		words: wrds,
-		toString: function(base){
-			base = (typeof base == "number" && base >= 2 && base <= 37) ? base : 16;
-			var lng = (Math.pow(2, 32) - 1).toString(base).length;
-			var str = "";
-			for(var ix = 0; ix < this.words.length; ix++)
-				str += ("00000000000000000000000000000000" + this.words[ix].toString(base)).substr(-lng);
-			return str;
+		toString: function(custom){
+			if(typeof custom == "string" && MyCrypto.Enc.hasOwnProperty(custom))
+				return MyCrypto.Enc[custom].stringify(this.toBytes());
+			else if(typeof custom == "object" && custom.hasOwnProperty("stringify"))
+				return custom.stringify(this.toBytes());
+			else if(typeof custom == "number"){
+				custom = (typeof custom == "number" && custom >= 2 && custom < 37) ? custom : 16;
+				var lng = (Math.pow(2, 32) - 1).toString(custom).length;
+				var str = "";
+				for(var ix = 0; ix < this.words.length; ix++)
+					str += ("00000000000000000000000000000000" + this.words[ix].toString(custom)).substr(-lng);
+				return str;
+			}
+			else
+				return MyCrypto.Enc.Hex.stringify(this.toBytes());
 		},
 		toBytes: function(){
 			return MyCrypto.Enc.Words.from(this.words);
