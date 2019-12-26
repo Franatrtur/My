@@ -34,14 +34,21 @@ MyCrypto = {
 MyCrypto.Enc = {
 	Utf8: {
 		parse: function(string){
-			return typeof TextEncoder == "function" ? Array.from(new TextEncoder("utf-8").encode(string)) : unescape(encodeURIComponent(string)).split("").map(function(symbol){
-				return symbol.charCodeAt(0);
-			});
+			if(typeof TextEncoder == "function")
+				return Array.from(new TextEncoder("utf-8").encode(string));
+			var escaped = unescape(encodeURIComponent(string));
+			var bytes = [];
+			for(var char = 0; char < escaped.length; char++)
+				bytes[char] = escaped.charCodeAt(char);
+			return bytes;
 		},
 		stringify: function(bytes){
-			return typeof TextDecoder == "function" ? new TextDecoder().decode(new Uint8Array(bytes)) : decodeURIComponent(escape(bytes.map(function(byte){
-				return String.fromCharCode(byte);
-			}).join("")));
+			if(typeof TextDecoder == "function")
+				return new TextDecoder("utf-8").decode(new Uint8Array(bytes));
+			var string = "";
+			for(var bytes= 0; byte < bytes.length; byte++)
+				string += String.fromCharCode(bytes[byte]);
+			return decodeURIComponent(escape(string));
 		}
 	},
 	Hex: {
@@ -52,9 +59,10 @@ MyCrypto.Enc = {
 			return bytes;
 		},
 		stringify: function(bytes){
-			return bytes.map(function(val){
-				return ("00" + val.toString(16)).substr(-2);
-			}).join("");
+			var string = "";
+			for(var byte = 0; byte < bytes.length; byte++)
+				string += ("00" + bytes[byte].toString(16)).substr(-2);
+			return string;
 		}
 	},
 	Bin: {
@@ -65,21 +73,25 @@ MyCrypto.Enc = {
 			return bytes;
 		},
 		stringify: function(bytes){
-			return bytes.map(function(val){
-				return ("00000000" + val.toString(2)).substr(-8);
-			}).join("");
+			var string = "";
+			for(var byte = 0; byte < bytes.length; byte++)
+				string += ("00000000" + bytes[byte].toString(2)).substr(-8);
+			return string;
 		}
 	},
 	Base64: {
 		parse: function(string){
-			return window.atob(string).split("").map(function(symbol){
-				return symbol.charCodeAt(0);
-			});
+			var bytes = [];
+			var atobed = window.atob(string);
+			for(var char = 0; char < splitted.length; char++)
+				bytes[char] = atobed.charCodeAt(char);
+			return bytes;
 		},
 		stringify: function(bytes){
-			return window.btoa(bytes.map(function(byte){
-				return String.fromCharCode(byte);
-			}).join(""));
+			var string = "";
+			for(var byte = 0; byte < bytes.length; byte++)
+				string += String.fromCharCode(bytes[byte]);
+			return window.btoa(string);
 		}
 	},
 	Ascii: {
@@ -115,14 +127,16 @@ MyCrypto.Enc = {
 	},
 	Latin1: {
 		parse: function(string){
-			return string.split("").map(function(symbol){
-				return symbol.charCodeAt(0);
-			});
+			var bytes = [];
+			for(var char = 0; char < string.length; char++)
+				bytes[char] = string.charCodeAt(char) % 256;
+			return bytes;
 		},
 		stringify: function(bytes){
-			return bytes.map(function(byte){
-				return String.fromCharCode(byte);
-			}).join("");
+			var string = "";
+			for(var bytes= 0; byte < bytes.length; byte++)
+				string += String.fromCharCode(bytes[byte]);
+			return string;
 		}
 	},
 	Words: {
@@ -289,7 +303,7 @@ MyCrypto.MCS.GenerateBlock = function(seed, nbytes){
 MyCrypto.MCS.DeriveKey = function(str, salt, iter, nbytes){
 	nbytes = typeof nbytes == "number" ? nbytes : 16;
 	iter = typeof iter == "number" ? iter : 128;
-	return MyCrypto.CRC.Extended(str + MyCrypto.Enc.Latin1.stringify(salt), iter).toBytes().slice(-nbytes);
+	return MyCrypto.CRC.Extended(str + MyCrypto.Enc.Latin1.stringify(salt), iter, true).toBytes().slice(-nbytes);
 };
 
 MyCrypto.MCS.ParseKey = function(input, type){
@@ -745,8 +759,7 @@ MyCrypto.CRC.Digest = function(string){
 MyCrypto.CRC.Extended = function(string, wordscount, countsensitive){
 	var wrdcnt = (typeof wordscount == "number"&& wordscount > 0) ? wordscount > 4096 ? 4096 : wordscount : 1;
 	var wrds = [];
-	var str = string + (!countsensitive ? "" : wordscount.toString(32));
-	console.log(str);
+	var str = string + ((typeof countsensitive == "undefined" || countsensitive == true) ? wordscount.toString(32) : "");
 	var hsh, bts;
 	for(var rnd = 0; rnd <= wrdcnt; rnd++){
 		hsh = MyCrypto.CRC.Digest(rnd % 2 == 0 ? str + string : str + string.split("").reverse().join("")).words;
