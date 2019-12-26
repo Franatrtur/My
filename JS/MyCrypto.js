@@ -564,7 +564,7 @@ MyCrypto.MCS.Encryptor = function(settingsObj){
 			else{
 				var parsed = MyCrypto.MCS.importObj(data, MyCrypto.Enc[this.settings.encoding.output]);
 				var input = Array.isArray(data) ? data : parsed.data;
-				var salt  = Array.isArray(parsed.salt) ? parsed.salt : Array.isArray(this.settings.salt) ? this.settings.salt : MyCrypto.MCS.RandomBytes(8);
+				var salt  = Array.isArray(parsed.salt) ? parsed.salt : Array.isArray(this.settings.salt) ? this.settings.salt : false;
 				var key   = Array.isArray(this.settings.key) ? this.settings.key :
 							this.settings.key == false ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] :
 							MyCrypto.MCS.DeriveKey(this.settings.key, salt, 128, 16);
