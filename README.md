@@ -2,13 +2,13 @@
 A collection of my scipts helping me develop in JS and PHP.  
 Currently includes only MyCrypto in js.
 I would like to point out that I'm only 14 and new to programming,  
-however I'm not scared to publish this even though everyone says don't roll your own.
+however I'm not scared to publish this even though everyone says "don't roll your own crypto".
 
 ## MyCrypto.js
 ### About
 A Script including extended CRC hash and my own cipher MCS (my ciphering system).  
-MCS is a 128bit cipher similar to AES. Its primary purpose is fun, although it should be highly secure,  
-for serious things I would recommend libraries like libsodium/cryptojs.
+MCS is a 128bit cipher similar to AES. Its primary purpose was just to test my programming abilities,  
+although it should be highly secure, for serious things I would recommend libraries like libsodium/cryptojs.
 ### Usage:  
 #### Simple string encryption/decryption:  
 Cbc mode and Pkcs7 padding will be used by default.  
