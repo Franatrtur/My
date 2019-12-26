@@ -46,7 +46,7 @@ MyCrypto.Enc = {
 			if(typeof TextDecoder == "function")
 				return new TextDecoder("utf-8").decode(new Uint8Array(bytes));
 			var string = "";
-			for(var bytes= 0; byte < bytes.length; byte++)
+			for(var byte = 0; byte < bytes.length; byte++)
 				string += String.fromCharCode(bytes[byte]);
 			return decodeURIComponent(escape(string));
 		}
@@ -83,7 +83,7 @@ MyCrypto.Enc = {
 		parse: function(string){
 			var bytes = [];
 			var atobed = window.atob(string);
-			for(var char = 0; char < splitted.length; char++)
+			for(var char = 0; char < atobed.length; char++)
 				bytes[char] = atobed.charCodeAt(char);
 			return bytes;
 		},
@@ -134,7 +134,7 @@ MyCrypto.Enc = {
 		},
 		stringify: function(bytes){
 			var string = "";
-			for(var bytes= 0; byte < bytes.length; byte++)
+			for(var byte = 0; byte < bytes.length; byte++)
 				string += String.fromCharCode(bytes[byte]);
 			return string;
 		}
