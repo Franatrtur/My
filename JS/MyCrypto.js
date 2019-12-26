@@ -26,7 +26,7 @@ MyCrypto = {
 	CRC: {},
 	Enc: {},
 	info:{
-		version: "1.0", 
+		version: "1.1", 
 		author: "František Artur Čech (FranaTrtur) - CZ"
 	}
 };
