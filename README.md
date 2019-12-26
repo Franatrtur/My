@@ -90,7 +90,7 @@ an MCS export object will be returned.
 ```
 {
   encryptor: /encryptor used/,
-  usedParams /used mode, key, iv salt and rounds/,
+  usedParams /used mode, key, iv, salt and rounds/,
   data: /result in bytes/,
   encoding: /default encoding from encryptor output encoding/,
   include: /default for including salt while converting to string/,
