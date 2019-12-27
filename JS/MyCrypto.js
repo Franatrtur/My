@@ -109,7 +109,7 @@ MyCrypto.Enc = {
 			var decompressed = "";
 			var string = "";
 			var bits7 = [];
-			for(var byte = 0; byte < copied.length; byte ++){
+			for(var byte = 0; byte < copied.length; byte++){
 				if(byte == copied.length - 1){
 					while((decompressed.length + copied[copied.length - 1].toString(2).length) % 7 !== 0)
 						decompressed += "0";
