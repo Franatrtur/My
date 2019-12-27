@@ -558,21 +558,19 @@ MyCrypto.MCS.Encryptor = function(settingsObj){
 			if(typeof data == "object" && data.hasOwnProperty("usedParams")){
 				var input = data.data;
 				var salt = data.usedParams.salt;
-				var key = data.usedParams.key;
-				var iv = data.usedParams.iv;
 			}
 			else{
 				var parsed = MyCrypto.MCS.importObj(data, MyCrypto.Enc[this.settings.encoding.output]);
 				var input = Array.isArray(data) ? data : parsed.data;
 				var salt  = Array.isArray(parsed.salt) ? parsed.salt : Array.isArray(this.settings.salt) ? this.settings.salt : false;
-				var key   = Array.isArray(this.settings.key) ? this.settings.key :
-							this.settings.key == false ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] :
-							MyCrypto.MCS.DeriveKey(this.settings.key, salt, 128, 16);
-				var iv    = Array.isArray(this.settings.iv) ? this.settings.iv :
-							this.settings.iv == false ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] :
-							this.settings.iv == true ? MyCrypto.MCS.Core.EncryptRound(MyCrypto.MCS.Core.ExpandKey(key, 10), key) :
-							MyCrypto.MCS.DeriveKey(this.settings.iv, salt, 64, 16);
 			}
+			var key   = Array.isArray(this.settings.key) ? this.settings.key :
+						this.settings.key == false ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] :
+						MyCrypto.MCS.DeriveKey(this.settings.key, salt, 128, 16);
+			var iv    = Array.isArray(this.settings.iv) ? this.settings.iv :
+						this.settings.iv == false ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] :
+						this.settings.iv == true ? MyCrypto.MCS.Core.EncryptRound(MyCrypto.MCS.Core.ExpandKey(key, 10), key) :
+						MyCrypto.MCS.DeriveKey(this.settings.iv, salt, 64, 16);
 			var dedata = MyCrypto.MCS.Modes[this.settings.mode.toUpperCase()].decrypt(input, key, iv, this.settings.rounds, customcounter);
 			if(!!this.settings.padding)
 				dedata = MyCrypto.MCS.Paddings[this.settings.padding].unpad(dedata);
